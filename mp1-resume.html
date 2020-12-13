@@ -1,0 +1,415 @@
+<html>
+    
+    <style>
+        html{
+            background-color: #765b58;
+        }
+        
+        .photo-container{
+            background-color: #e6d6c5;
+            width: 60%;
+            margin: auto;
+            padding: 10px;
+            height: 70%;
+            border: 2px solid white;
+        }
+
+        .photo{
+            margin-left: auto;
+            margin-right: auto;
+            width: 50%;
+            vertical-align: middle;
+            float: left;
+
+        }
+
+        #description-container{
+            background-color: white;
+            float: right;
+            width: 46%;
+            height: 50%;
+            padding: 10px;
+
+        }
+
+        #contactlinks-container{
+            background-color: white;
+            float: right;
+            width: 46%;
+            height: 25%;
+            margin-top: 19px;
+        }
+
+        .intro-container{
+            display: inline;
+            padding-left: 20px;
+            width: 10%;
+
+            
+            font-family:'Courier New', Courier, monospace;
+            font-size: 11px;
+            text-align: justify;
+        }
+
+        #main-container{
+            display: flex;
+            justify-content: center;
+        }
+
+        .data-container{
+            font-family:'Courier New', Courier, monospace;
+            font-size: 12px;
+            text-align: justify;
+        }
+
+        #main-container.h2{
+            padding-bottom: 100px;
+            font-size: 20x;
+        }
+
+        #education_organizations-container{
+            background-color: #e6d6c5;
+            width: 253px;
+            border: 2px solid white;
+            margin: 0.5px;
+            min-height: 250px;
+        }
+
+        #works-container{
+            background-color: #e6d6c5;
+            width: 253px;
+            border: 2px solid white;
+            margin: 0.5px;
+            min-height: 250px;
+        }
+
+        #languages-container{
+            background-color: #e6d6c5;
+            width: 253px;
+            border: 2px solid white;
+            margin: 0.5px;
+            min-height: 250px;
+        }
+
+        .button{
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+        
+        /* Extra styles for the cancel button */
+        .cancelbtn {
+            width: auto;
+            padding: 10px 18px;
+            background-color: #f44336;
+        }
+
+        /* Center the image and position the close button */
+        .imgcontainer {
+            text-align: center;
+            margin: 24px 0 12px 0;
+            position: relative;
+        }
+
+        .container {
+            padding: 16px;
+        }
+
+        span.psw {
+            float: right;
+            padding-top: 16px;
+        }
+
+        .modal {
+            display: none; 
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%; 
+            height: 100%; 
+            padding-top: 60px;
+        }
+        
+        /* Modal Content/Box */
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto; 
+            border: 1px solid #888;
+            width: 80%; 
+        }
+
+        /* The Close Button (x) */
+        .close {
+            position: absolute;
+            right: 25px;
+            top: 0;
+            color: #000;
+            font-size: 35px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* Add Zoom Animation */
+        .animate {
+            -webkit-animation: animatezoom 0.6s;
+            animation: animatezoom 0.6s
+        }
+
+        @-webkit-keyframes animatezoom {
+            from {-webkit-transform: scale(0)} 
+            to {-webkit-transform: scale(1)}
+        }
+        
+        @keyframes animatezoom {
+            from {transform: scale(0)} 
+            to {transform: scale(1)}
+        }
+
+    </style>
+
+    <head>
+        <div class = "photo-container"> 
+            <button class = "button" onclick="document.getElementById('id01').style.display='block'" style="width:auto;"> Login </button>
+            <div id="id01" class="modal">
+  
+                <form name = "main-form" class="modal-content animate" action = "edit.html">
+                  <div class="imgcontainer">
+                    <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
+                  </div>
+              
+                  <div class="container">
+                    <label for ="uname"><b>Username</b></label>
+                    <input type="text" name="uname" required>
+              
+                    <label for ="psw"><b>Password</b></label>
+                    <input type="password" name="psw" required>
+                      
+                    <button type="submit" onclick = "validate()">Login</button>
+                  </div>
+                </form>
+            </div>
+
+            <img src = "Daniel Baguio.jpg" class = "photo">
+            <div id = "description-container" class = "intro-container">
+                <h1> Daniel Baguio </h1>
+                <h2> Computer Scientist </h2>
+            </div>
+            <div id = "contactlinks-container" class = "intro-container"> <h3> Contact Links</h3></div>
+        </div>
+    </head>
+
+    <body>
+        <div id = "main-container" > 
+            <section id = "education_organizations-container" class = "data-container"></section>
+            <section id = "works-container" class = "data-container" ></section>
+            <section id = "languages-container" class = "data-container"></section>
+        </div>
+    
+    
+    
+
+        <!-- The core Firebase JS SDK is always required and must be listed first -->
+        <script src="https://www.gstatic.com/firebasejs/8.2.0/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-firestore.js"></script>
+
+        <!-- TODO: Add SDKs for Firebase products that you want to use
+            https://firebase.google.com/docs/web/setup#available-libraries -->
+        <script src="https://www.gstatic.com/firebasejs/8.2.0/firebase-analytics.js"></script>
+        
+        <script>
+            
+            var modal = document.getElementById('id01');
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+
+            function validate(){
+                var username = document.forms["main-form"]["uname"].value;
+                var password = document.forms["main-form"]["psw"].value;
+
+                if (username == null || username.trim() == ""){
+                    alert("Error: Username must be entered!")
+                    document.forms["main-form"]["uname"].style.background = "red";
+                    return false;
+                }
+                if (password == null || username.trim() == ""){
+                    alert("Error: Password must be entered!")
+                    document.forms["main-form"]["psw"].style.background = "red";
+                    return false;
+                }
+
+                if (username == "sashmir.yap@dlsu.edu.ph" && password == "abcd1234"){
+                    alert("Correct username & password");
+                }
+                else{
+                    alert("Incorrect username & password");
+                }
+            }
+
+
+            function render_Introduction(description){
+                
+                var intro_description = document.createElement("p");
+
+                intro_description.className = "description";
+                intro_description.innerHTML = description;
+                document.getElementById("description-container").appendChild(intro_description);
+
+            }
+
+            function render_Education(school, year){
+                
+                var school_name = document.createElement("div");
+                var duration = document.createElement("p");
+
+                school_name.className = "school-name";
+                duration.className = "duration";
+
+                school_name.innerHTML = school;
+                duration.innerHTML = year;
+
+                school_name.appendChild(duration);
+
+                document.getElementById("education_organizations-container").appendChild(school_name);
+            }
+
+            function render_organizations(name, position){
+                
+                var org_name = document.createElement("div");
+                var org_position = document.createElement("p");
+
+                org_name.className = "org_name";
+                org_position.className = "org_position";
+
+                org_name.innerHTML = name;
+                org_position.innerHTML = position;
+
+                org_name.appendChild(org_position);
+
+                document.getElementById("education_organizations-container").appendChild(org_name);
+            }
+
+            function render_works(language, description){
+                
+                var programming_language = document.createElement("div");
+                var worked_with = document.createElement("p");
+
+                programming_language.className = "language";
+                worked_with.className = "worked_with";
+
+                programming_language.innerHTML = language;
+                worked_with.innerHTML = description;
+
+                programming_language.appendChild(worked_with);
+
+                document.getElementById("works-container").appendChild(programming_language);
+            }
+
+            function render_languages(language){
+                
+                var known_language = document.createElement("div");
+                known_language.className = "known_language";
+                known_language.innerHTML = language;
+
+                document.getElementById("languages-container").appendChild(known_language);
+            }
+
+            function render_links(site, link){
+                
+                var website = document.createElement("div");
+                var web_link = document.createElement("href");
+
+                website.className = "website";
+                web_link.className = "web_link";
+
+                website.innerHTML = site;
+                web_link.innerHTML = link;
+
+                website.appendChild(web_link);
+
+                document.getElementById("contactlinks-container").appendChild(website);
+            }
+
+            // Your web app's Firebase configuration
+            // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+            var firebaseConfig = {
+                apiKey: "AIzaSyDC-uxfFCfjYx6DPVKWaWMeZ9soaxLHNYc",
+                authDomain: "mp1-resume-5706b.firebaseapp.com",
+                projectId: "mp1-resume-5706b",
+                storageBucket: "mp1-resume-5706b.appspot.com",
+                messagingSenderId: "43506513611",
+                appId: "1:43506513611:web:93a5b5587d29d7d9f90d4e",
+                measurementId: "G-PD2TV96KF1"
+            };
+
+            // Initialize Firebase
+            
+            var app = firebase.initializeApp(firebaseConfig);
+            firebase.analytics();
+            var db = firebase.firestore(app)
+
+
+            // Gets my introduction
+            db.collection("introduction").get().then((querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                    console.log(`  ${doc.data().description}`);
+                    render_Introduction(doc.data().description);
+                });
+            });
+
+            // Gets my educational background
+            db.collection("education").get().then((querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                    console.log(`  ${doc.data().schoolname}`);
+                    console.log(`  ${doc.data().year}`);
+                    render_Education(doc.data().schoolname, doc.data().year);
+                });
+            });
+
+            // Gets the past organizations i have been to
+            db.collection("organizations").get().then((querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                    console.log(`  ${doc.data().name}`);
+                    console.log(`  ${doc.data().position}`);
+                    render_organizations(doc.data().name, doc.data().position);
+                });
+            });
+
+            // Gets previous works with others
+            db.collection("previous_works").get().then((querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                    console.log(`  ${doc.data().language}`);
+                    console.log(`  ${doc.data().description}`);
+                    render_works(doc.data().language, doc.data().description);
+                });
+            });
+
+            // Gets the programming languages I know
+            db.collection("programming").get().then((querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                    console.log(`  ${doc.data().language}`);
+                    render_languages(doc.data().language);
+                });
+            });
+
+            // Gets my contact links from the different websites
+            db.collection("contact_links").get().then((querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                    console.log(`  ${doc.data().site}`);
+                    console.log(`  ${doc.data().link}`);
+                    render_links(doc.data().site, doc.data().link);
+                });
+            });
+
+        </script>
+    
+    
+    </body>
+
+
+
+</html>
+
